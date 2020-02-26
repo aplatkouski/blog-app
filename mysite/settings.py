@@ -126,5 +126,5 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-# see https://tutorial.djangogirls.org/ru/django_start_project/
+# aplatkouski: see https://tutorial.djangogirls.org/ru/django_start_project/
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')

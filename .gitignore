@@ -137,3 +137,6 @@ dmypy.json
 bin/
 lib/
 lib64
+
+# Idea
+.idea/

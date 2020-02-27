@@ -14,8 +14,6 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-# aplatkouski 2020.02.26
 PROJECT_ROOT = os.path.dirname(__file__)
 
 
@@ -28,7 +26,6 @@ SECRET_KEY = '3aa!-)(9fe59sh*zmvvw3p-pj85f+b$+^mev%-0u(*a$s0weh6'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# see https://tutorial.djangogirls.org/ru/django_start_project/
 ALLOWED_HOSTS = ['127.0.0.1', '.pythonanywhere.com']
 
 
@@ -59,7 +56,6 @@ ROOT_URLCONF = 'mysite.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # aplatkouski 2020.02.26
         'DIRS': [
             os.path.join(PROJECT_ROOT, 'templates')
         ],
@@ -126,5 +122,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-# aplatkouski: see https://tutorial.djangogirls.org/ru/django_start_project/
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')

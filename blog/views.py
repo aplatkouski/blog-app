@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
-from .models import Post
-from .forms import PostForm
+from .models import Post, Comment
+from .forms import PostForm, CommentForm
 
 
 def post_list(request):
@@ -12,7 +12,8 @@ def post_list(request):
 
 def post_detail(request, post_pk):
 	post = get_object_or_404(Post, pk=post_pk)
-	return render(request, 'blog/post_detail.html', {'post': post})
+	comments = post.get_comments(request.user.is_authenticated)
+	return render(request, 'blog/post_detail.html', {'post': post, 'comments': comments})
 
 
 @login_required
@@ -60,4 +61,33 @@ def post_publish(request, post_pk):
 def post_remove(request, post_pk):
 	post = get_object_or_404(Post, pk=post_pk)
 	post.delete()
-	return redirect('post_list')
+	if post.published_date:
+		return redirect('post_list')
+	return redirect('post_draft_list')
+
+
+def add_comment(request, post_pk):
+	post = get_object_or_404(Post, pk=post_pk)
+	if request.method == "POST":
+		form = CommentForm(request.POST)
+		if form.is_valid():
+			comment = form.save(commit=False)
+			comment.post = post
+			comment.save()
+			return redirect('post_detail', post_pk=post_pk)
+	form = CommentForm()
+	return render(request, 'blog/add_comment.html', {'post': post, 'form': form})
+
+
+@login_required
+def comment_approve(request, post_pk, comment_pk):
+	comment = get_object_or_404(Comment, pk=comment_pk)
+	comment.approve()
+	return redirect('post_detail', post_pk=post_pk)
+
+
+@login_required
+def comment_remove(request, post_pk, comment_pk):
+	comment = get_object_or_404(Comment, pk=comment_pk)
+	comment.delete()
+	return redirect('post_detail', post_pk=post_pk)

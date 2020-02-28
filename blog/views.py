@@ -12,7 +12,10 @@ def post_list(request):
 
 def post_detail(request, post_pk):
 	post = get_object_or_404(Post, pk=post_pk)
-	return render(request, 'blog/post_detail.html', {'post': post})
+	comments = (
+		comment for comment in post.comments.order_by('-created_date')
+		if comment.is_approved)
+	return render(request, 'blog/post_detail.html', {'post': post, 'comments': comments})
 
 
 @login_required

@@ -61,7 +61,9 @@ def post_publish(request, post_pk):
 def post_remove(request, post_pk):
 	post = get_object_or_404(Post, pk=post_pk)
 	post.delete()
-	return redirect('post_list')
+	if post.published_date:
+		return redirect('post_list')
+	return redirect('post_draft_list')
 
 
 def add_comment(request, post_pk):
@@ -81,4 +83,11 @@ def add_comment(request, post_pk):
 def comment_approve(request, post_pk, comment_pk):
 	comment = get_object_or_404(Comment, pk=comment_pk)
 	comment.approve()
+	return redirect('post_detail', post_pk=post_pk)
+
+
+@login_required
+def comment_remove(request, post_pk, comment_pk):
+	comment = get_object_or_404(Comment, pk=comment_pk)
+	comment.delete()
 	return redirect('post_detail', post_pk=post_pk)

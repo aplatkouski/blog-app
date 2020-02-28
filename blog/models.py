@@ -19,11 +19,6 @@ class Post(models.Model):
             return self.comments.order_by('-created_date')
         return self.comments.filter(is_approved=True).order_by('-created_date')
 
-    def get_comments_count(self, is_authenticated=False):
-        if is_authenticated:
-            return len(self.comments.all())
-        return len(self.comments.filter(is_approved=True))
-
     def __str__(self):
         return self.title
 

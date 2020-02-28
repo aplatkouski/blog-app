@@ -12,10 +12,7 @@ def post_list(request):
 
 def post_detail(request, post_pk):
 	post = get_object_or_404(Post, pk=post_pk)
-	if request.user.is_authenticated:
-		comments = post.comments.all()
-	else:
-		comments = post.published_comments()
+	comments = post.get_comments(request.user.is_authenticated)
 	return render(request, 'blog/post_detail.html', {'post': post, 'comments': comments})
 
 

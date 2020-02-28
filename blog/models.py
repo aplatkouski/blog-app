@@ -14,15 +14,15 @@ class Post(models.Model):
         self.published_date = timezone.now()
         self.save()
 
-    def published_comments(self):
-        if self.comments.count:
-            comments = tuple(
-                comment for comment in self.comments.order_by('-created_date')
-                if comment.is_approved)
-        return comments
+    def get_comments(self, is_authenticated=False):
+        if is_authenticated:
+            return self.comments.order_by('-created_date')
+        return self.comments.filter(is_approved=True).order_by('-created_date')
 
-    def published_comments_count(self):
-        return len(self.published_comments())
+    def get_comments_count(self, is_authenticated=False):
+        if is_authenticated:
+            return len(self.comments.all())
+        return len(self.comments.filter(is_approved=True))
 
     def __str__(self):
         return self.title

@@ -14,6 +14,16 @@ class Post(models.Model):
         self.published_date = timezone.now()
         self.save()
 
+    def published_comments(self):
+        if self.comments.count:
+            comments = tuple(
+                comment for comment in self.comments.order_by('-created_date')
+                if comment.is_approved)
+        return comments
+
+    def published_comments_count(self):
+        return len(self.published_comments())
+
     def __str__(self):
         return self.title
 

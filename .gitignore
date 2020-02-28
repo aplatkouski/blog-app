@@ -60,10 +60,8 @@ coverage.xml
 # Django stuff:
 *.log
 local_settings.py
-aplatkouski 2020.02.25
 db.sqlite3
 db.sqlite3-journal
-# aplatkouski 2020.02.25
 /static
 
 # Flask stuff:

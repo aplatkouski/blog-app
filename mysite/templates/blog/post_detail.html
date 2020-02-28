@@ -24,6 +24,9 @@
 		{% for comment in comments %}
 			<div class="comment">
 				<div class="date">{{ comment.created_date }}</div>
+				{% if not comment.is_approved %}
+					<a class="btn btn-default" href="{% url 'comment_approve' post_pk=post.pk comment_pk=comment.pk %}">Approve</a>
+				{% endif %}
 				<strong>{{ comment.author }}</strong>
 				<p>{{ comment.text|linebreaks }}</p>
 			</div>

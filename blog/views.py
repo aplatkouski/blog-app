@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
-from .models import Post
+from .models import Post, Comment
 from .forms import PostForm, CommentForm
 
 
@@ -12,7 +12,11 @@ def post_list(request):
 
 def post_detail(request, post_pk):
 	post = get_object_or_404(Post, pk=post_pk)
-	return render(request, 'blog/post_detail.html', {'post': post, 'comments': post.published_comments()})
+	if request.user.is_authenticated:
+		comments = post.comments.all()
+	else:
+		comments = post.published_comments()
+	return render(request, 'blog/post_detail.html', {'post': post, 'comments': comments})
 
 
 @login_required
@@ -74,3 +78,10 @@ def add_comment(request, post_pk):
 			return redirect('post_detail', post_pk=post_pk)
 	form = CommentForm()
 	return render(request, 'blog/add_comment.html', {'post': post, 'form': form})
+
+
+@login_required
+def comment_approve(request, post_pk, comment_pk):
+	comment = get_object_or_404(Comment, pk=comment_pk)
+	comment.approve()
+	return redirect('post_detail', post_pk=post_pk)

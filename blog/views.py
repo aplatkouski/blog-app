@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
 from .models import Post
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 
 
 def post_list(request):
@@ -61,3 +61,16 @@ def post_remove(request, post_pk):
 	post = get_object_or_404(Post, pk=post_pk)
 	post.delete()
 	return redirect('post_list')
+
+
+def add_comment(request, post_pk):
+	post = get_object_or_404(Post, pk=post_pk)
+	if request.method == "POST":
+		form = CommentForm(request.POST)
+		if form.is_valid():
+			comment = form.save(commit=False)
+			comment.post = post
+			comment.save()
+			return redirect('post_detail', post_pk=post_pk)
+	form = CommentForm()
+	return render(request, 'blog/add_comment.html', {'post': post, 'form': form})

@@ -1,7 +1,8 @@
 {% load static %}
 <html>
     <head>
-        <title>Django blog</title>
+        <meta charset="UTF-8">
+        <title>{% block title %}Django blog{% endblock %}</title>
         <link rel="stylesheet" type='text/css' href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" type='text/css' href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <link rel="stylesheet" type='text/css' href="{% static 'css/blog.css' %}">

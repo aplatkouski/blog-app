@@ -26,34 +26,25 @@
 			{{ post.title }}</h1>
 		<p>{{ post.text|linebreaksbr }}</p>
 	</div>
-	<hr>
-	{% block choice_new %}
-		{% if post.is_pool and user.is_authenticated %}
-			<a class="btn btn-default" href="{% url 'choice_new' post_pk=post.pk %}">Add choice</a>
-		{% endif %}
-	{% endblock %}
-	<hr>
 	{% block choices %}
 		{% if post.is_pool %}
-			{% for choice in post.choices.all %}
-				<div class="choice">
-					<p>
-						<a class="btn btn-default" href="{% url 'choice_vote' post_pk=post.pk choice_pk=choice.pk %}">
-							<span class="glyphicon glyphicon-thumbs-up"></span>
-						</a>
-						{% if user.is_authenticated %}
-							<a class="btn btn-default" href="{% url 'choice_remove' post_pk=post.pk choice_pk=choice.pk %}">
-								<span class="glyphicon glyphicon-remove"></span>
-							</a>
-						{% endif %}
+			<hr>
+			<div class="choice">
+				<form method="POST" class="vote-form" action="vote/">
+				{% csrf_token %}
+				{% for choice in post.choices.all %}
+					<input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.pk }}" />
+					<label for="choice{{ forloop.counter }}">
 						[<strong>{{ choice.votes }}</strong>] {{ choice.text }}
-					</p>
-				</div>
-			{% endfor %}
+					</label><br />
+				{% endfor %}
+				<input type="submit" value="Vote" />
+				</form>
+			</div>
 		{% endif %}
 	{% endblock %}
-	<hr>
 	{% block comments %}
+		<hr>
 		<a class="btn btn-default" href="{% url 'add_comment_to_post' post_pk=post.pk %}">Add comment</a>
 		{% for comment in comments %}
 			<div class="comment">

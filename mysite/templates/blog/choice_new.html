@@ -1,15 +1,23 @@
 {% extends 'blog/post_detail.html' %}
 
-{% block choice_new %}
+{% block choices %}
+    <hr>
     {% if post.is_pool and user.is_authenticated %}
         <h2>New choice</h2>
         <form method="POST" class="choice-form">
             {% csrf_token %}
             {{ form.as_p }}
-        <button type="submit" class="save btn btn-default">Save</button>
+        <button type="submit" class="save btn btn-default">Add</button>
         </form>
     {% endif %}
     <a class="btn btn-default" href="{% url 'post_detail' post_pk=post.pk %}">Finished</a>
+    <hr>
+    <h2>Current choices:</h2>
+    {% for choice in post.choices.all %}
+        <p>
+            [<strong>{{ choice.votes }}</strong>] {{ choice.text }}
+        </p>
+    {% endfor %}
 {% endblock %}
 
 {% block comments %}

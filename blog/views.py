@@ -107,9 +107,14 @@ def choice_new(request, post_pk):
 	return render(request, 'blog/choice_new.html', {'post': post, 'form': form})
 
 
-def choice_vote(request, post_pk, choice_pk):
-	choice = get_object_or_404(Choice, pk=choice_pk)
-	choice.vote()
+def choice_vote(request, post_pk):
+	if request.method == "POST":
+		try:
+			choice_pk = request.POST['choice']
+		except (KeyError, ):
+			return redirect('post_detail', post_pk=post_pk)
+		choice = get_object_or_404(Choice, pk=choice_pk)
+		choice.vote()
 	return redirect('post_detail', post_pk=post_pk)
 
 
@@ -117,4 +122,4 @@ def choice_vote(request, post_pk, choice_pk):
 def choice_remove(request, post_pk, choice_pk):
 	choice = get_object_or_404(Choice, pk=choice_pk)
 	choice.delete()
-	return redirect('post_detail', post_pk=post_pk)
+	return redirect('post_edit', post_pk=post_pk)

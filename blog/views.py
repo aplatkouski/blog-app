@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 
-from .models import Post, Comment
-from .forms import PostForm, CommentForm
+from .models import Post, Comment, Choice
+from .forms import PostForm, CommentForm, ChoiceForm
 
 
 def post_list(request):
@@ -38,6 +38,8 @@ def post_new(request):
 			post = form.save(commit=False)
 			post.author = request.user
 			post.save()
+			if post.is_pool:
+				return redirect('choice_edit', post_pk=post.pk)
 			return redirect('post_detail', post_pk=post.pk)
 	form = PostForm()
 	return render(request, 'blog/post_edit.html', {'form': form})
@@ -89,4 +91,30 @@ def comment_approve(request, post_pk, comment_pk):
 def comment_remove(request, post_pk, comment_pk):
 	comment = get_object_or_404(Comment, pk=comment_pk)
 	comment.delete()
+	return redirect('post_detail', post_pk=post_pk)
+
+
+@login_required
+def choice_new(request, post_pk):
+	post = get_object_or_404(Post, pk=post_pk)
+	if request.method == "POST":
+		form = ChoiceForm(request.POST)
+		if form.is_valid():
+			choice = form.save(commit=False)
+			choice.pool = get_object_or_404(Post, pk=post_pk)
+			choice.save()
+	form = ChoiceForm()
+	return render(request, 'blog/choice_new.html', {'post': post, 'form': form})
+
+
+def choice_vote(request, post_pk, choice_pk):
+	choice = get_object_or_404(Choice, pk=choice_pk)
+	choice.vote()
+	return redirect('post_detail', post_pk=post_pk)
+
+
+@login_required
+def choice_remove(request, post_pk, choice_pk):
+	choice = get_object_or_404(Choice, pk=choice_pk)
+	choice.delete()
 	return redirect('post_detail', post_pk=post_pk)

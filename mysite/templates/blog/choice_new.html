@@ -1,0 +1,16 @@
+{% extends 'blog/post_detail.html' %}
+
+{% block choice_new %}
+    {% if post.is_pool and user.is_authenticated %}
+        <h2>New choice</h2>
+        <form method="POST" class="choice-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Save</button>
+        </form>
+    {% endif %}
+    <a class="btn btn-default" href="{% url 'post_detail' post_pk=post.pk %}">Finished</a>
+{% endblock %}
+
+{% block comments %}
+{% endblock %}

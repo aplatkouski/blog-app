@@ -19,11 +19,32 @@
 				<span class="glyphicon glyphicon-remove"></span>
 			</a>
 		{% endif %}
-		<h1>{{ post.title }}</h1>
+		<h1>
+			{% if post.is_pool %}
+				<span class="glyphicon glyphicon-question-sign"></span>
+			{% endif %}
+			{{ post.title }}</h1>
 		<p>{{ post.text|linebreaksbr }}</p>
 	</div>
-	<hr>
+	{% block choices %}
+		{% if post.is_pool %}
+			<hr>
+			<div class="choice">
+				<form method="POST" class="vote-form" action="vote/">
+				{% csrf_token %}
+				{% for choice in post.choices.all %}
+					<input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.pk }}" />
+					<label for="choice{{ forloop.counter }}">
+						[<strong>{{ choice.votes }}</strong>] {{ choice.text }}
+					</label><br />
+				{% endfor %}
+				<input type="submit" value="Vote" />
+				</form>
+			</div>
+		{% endif %}
+	{% endblock %}
 	{% block comments %}
+		<hr>
 		<a class="btn btn-default" href="{% url 'add_comment_to_post' post_pk=post.pk %}">Add comment</a>
 		{% for comment in comments %}
 			<div class="comment">

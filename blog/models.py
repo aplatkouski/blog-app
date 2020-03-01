@@ -9,6 +9,7 @@ class Post(models.Model):
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
+    is_pool = models.BooleanField(default=False)
 
     def publish(self):
         self.published_date = timezone.now()
@@ -35,4 +36,17 @@ class Comment(models.Model):
         self.save()
 
     def __str__(self):
-        return ': '.join((self.author, self.text))
+        return f'{self.author}: {self.text}'
+
+
+class Choice(models.Model):
+    pool = models.ForeignKey(Post, on_delete=models.CASCADE, related_name='choices')
+    text = models.CharField(max_length=200)
+    votes = models.IntegerField(default=0)
+
+    def vote(self):
+        self.votes += 1
+        self.save()
+
+    def __str__(self):
+        return f'[{self.votes}] {self.text}'

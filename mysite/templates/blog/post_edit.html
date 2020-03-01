@@ -7,4 +7,23 @@
         {{ form.as_p }}
         <button type="submit" class="save btn btn-default">Save</button>
     </form>
+    {% if form.instance and form.instance.is_pool %}
+        {% block choice_new %}
+            <hr>
+            <a class="btn btn-default" href="{% url 'choice_new' post_pk=form.instance.pk %}">Add choice</a>
+        {% endblock %}
+        {% block choices %}
+            <hr>
+            <div class="choice">
+                {% for choice in form.instance.choices.all %}
+                    <p>
+                        <a class="btn btn-default" href="{% url 'choice_remove' post_pk=form.instance.pk choice_pk=choice.pk %}">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </a>
+                        [<strong>{{ choice.votes }}</strong>] {{ choice.text }}
+                    </p>
+                {% endfor %}
+            </div>
+        {% endblock %}
+    {% endif %}
 {% endblock %}

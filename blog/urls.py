@@ -13,4 +13,7 @@ urlpatterns = [
     path('post/<int:post_pk>/comment/add/', views.add_comment, name='add_comment_to_post'),
     path('post/<int:post_pk>/comment/<int:comment_pk>/approve/', views.comment_approve, name='comment_approve'),
     path('post/<int:post_pk>/comment/<int:comment_pk>/remove/', views.comment_remove, name='comment_remove'),
+    path('post/<int:post_pk>/choice/new/', views.choice_new, name='choice_new'),
+    path('post/<int:post_pk>/vote/', views.choice_vote, name='choice_vote'),
+    path('post/<int:post_pk>/choice/<int:choice_pk>/remove/', views.choice_remove, name='choice_remove'),
 ]

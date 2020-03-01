@@ -8,7 +8,11 @@
 					{{ post.published_date }}
 				</div>
 			{% endif %}
-			<h1><a href="{% url 'post_detail' post_pk=post.pk %}">{{ post.title }}</a></h1>
+			<h1>
+				{% if post.is_pool %}
+					<span class="glyphicon glyphicon-question-sign"></span>
+				{% endif %}
+				<a href="{% url 'post_detail' post_pk=post.pk %}">{{ post.title }}</a></h1>
 			<p>{{ post.text|linebreaksbr }}</p>
 			{% if post.get_comments.count %}
 				<a href="{% url 'post_detail' post_pk=post.pk %}">Comments: {{ post.get_comments.count }}</a>

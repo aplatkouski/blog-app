@@ -8,7 +8,7 @@ If you want to deploy this app on [pythonanywhere.com](https://pythonanywhere.co
 
  1. Sign up for a PythonAnywhere account
  2. Creating a PythonAnywhere API token (see help on the website)
- 3. Configuring our site on PythonAnywhere command-line
+ 3. Configuring your site on PythonAnywhere command-line
     ```bash
     # PythonAnywhere command-line
     $ pip3 install --user pythonanywhere
@@ -20,8 +20,8 @@ If you want to deploy this app on [pythonanywhere.com](https://pythonanywhere.co
     # PythonAnywhere command-line
     $ cd ~/<your-pythonanywhere-domain>.pythonanywhere.com
     $ workon <your-pythonanywhere-domain>.pythonanywhere.com
-    $ git pull
+    $ git fetch
     $ ./manage.py migrate
     $ ./manage.py collectstatic
     ```
- 5. Reload your application on the Tab "Web" with Reload button.
+ 5. Reload your application on the tab "Web" with Reload button.

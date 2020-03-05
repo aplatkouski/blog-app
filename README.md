@@ -20,7 +20,7 @@ If you want to deploy this app on [pythonanywhere.com](https://pythonanywhere.co
     # PythonAnywhere command-line
     $ cd ~/<your-pythonanywhere-domain>.pythonanywhere.com
     $ workon <your-pythonanywhere-domain>.pythonanywhere.com
-    $ git pull
+    $ git fetch
     $ ./manage.py migrate
     $ ./manage.py collectstatic
     ```
